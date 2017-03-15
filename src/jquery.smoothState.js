@@ -166,6 +166,7 @@
        * @param   {string}    prev - previous url (optional)
        *
        */
+/*
       isHash: function (href, prev) {
         prev = prev || window.location.href;
 
@@ -174,6 +175,22 @@
 
         return (hasHash && samePath);
       },
+*/
+		 isHash: function (url, prev) {
+		   prev = prev || window.location.pathname;
+		   var hasPathname = (url.indexOf(prev) >= 0) ? true : false,
+		       pathEnd = url.slice(url.indexOf(prev) + prev.length),
+		       hasHash = (url.indexOf("#") > 0) ? true : false;
+
+		    if (pathEnd !== '' && pathEnd.indexOf('#') !== 0) {
+		      // If we go from / to /something#new hasPathname is true.
+		      return false;
+		    }
+
+		    return (hasPathname && hasHash) ? true : false;
+		  },
+
+
 
       /**
        * Translates a url string into a $.ajax settings obj
@@ -488,7 +505,7 @@
               if (options.scroll) {
                 repositionWindow();
               }
-              
+
               bindPrefetchHandlers($container);
 
             });
@@ -734,18 +751,18 @@
         setRateLimitRepeatTime = function () {
           rateLimitRepeatTime = parseInt(Date.now()) + parseInt(options.repeatDelay);
         },
-        
+
         /**
          * Binds prefetch events
          * @param   {object}    event
          */
         bindPrefetchHandlers = function ($element) {
-            		
+
           if (options.anchors && options.prefetch) {
             $element.find(options.anchors).not(options.prefetchBlacklist).on(options.prefetchOn, null, hoverAnchor);
           }
         },
-		
+
         /**
          * Binds all events and inits functionality
          * @param   {object}    event
